@@ -26,7 +26,7 @@ jobs:
 
       - name: Install awscli
         run: |
-          pip install awscli
+          sudo pip install awscli
           aws --version
 
       - name: Set aws region
@@ -34,12 +34,12 @@ jobs:
 
       - name: Install ecs-deploy
         run: |
-          curl https://raw.githubusercontent.com/silinternational/ecs-deploy/master/ecs-deploy | tee /usr/bin/ecs-deploy
-          chmod +x /usr/bin/ecs-deploy
+          curl https://raw.githubusercontent.com/silinternational/ecs-deploy/master/ecs-deploy | sudo tee /usr/bin/ecs-deploy
+          sudo chmod +x /usr/bin/ecs-deploy
 
       - name: Install jq
-        run: apt-get install -y jq
+        run: sudo apt-get install -y jq
 
       - name: Deploy
         run: DEPLOY_ENV=stg ./deploy.sh
-        timeout-minutes: 20m
+        timeout-minutes: 20
