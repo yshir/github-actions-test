@@ -12,7 +12,7 @@
 
 ActiveRecord::Schema.define(version: 2020_12_11_045816) do
 
-  create_table "todos", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "todos", charset: "utf8mb4", force: :cascade do |t|
     t.string "title", null: false
     t.boolean "is_done", null: false
     t.datetime "created_at", precision: 6, null: false
