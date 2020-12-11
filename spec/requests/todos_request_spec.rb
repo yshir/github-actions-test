@@ -32,4 +32,13 @@ RSpec.describe "Todos", type: :request do
       expect(result['todo']['title']).to eq 'This is a test todo'
     end
   end
+
+  describe 'PUT /todos' do
+    it 'updates the todo and returns it' do
+      post "/todos/#{todo.id}", params: { title: 'This task was updated' }.to_json, headers: headers
+      expect(response.status).to eq 200
+      result = JSON.parse(response.body)
+      expect(result['todo']['title']).to eq 'This task was updated'
+    end
+  end
 end
