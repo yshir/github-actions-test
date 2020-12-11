@@ -9,7 +9,6 @@ jobs:
       image: ruby:2.6.6
       env:
         RAILS_ENV: test
-        MYSQL_ROOT_PASSWORD: password
 
     services:
       mysql:
@@ -23,9 +22,8 @@ jobs:
           --health-retries 10
         env:
           MYSQL_DATABASE: myapp_test
-          MYSQL_USER: root
-          MYSQL_PASSWORD: password
-          MYSQL_ROOT_PASSWORD: password
+          MYSQL_ALLOW_EMPTY_PASSWORD: true
+          MYSQL_ROOT_PASSWORD: ''
 
     steps:
       - uses: actions/checkout@v2
