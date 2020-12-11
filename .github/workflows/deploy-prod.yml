@@ -22,18 +22,24 @@ jobs:
 
       - uses: actions/setup-python@v2
         with:
-          python-version: 3.8
+          python-version: '3.x'
 
       - name: Install awscli
         run: |
-          sudo pip install awscli
+          pip install awscli
           aws --version
+
+      - name: Set aws region
+        run: aws configure set region ap-northeast-1
 
       - name: Install ecs-deploy
         run: |
           curl https://raw.githubusercontent.com/silinternational/ecs-deploy/master/ecs-deploy | tee /usr/bin/ecs-deploy
-          sudo chmod +x /usr/bin/ecs-deploy
+          chmod +x /usr/bin/ecs-deploy
 
-      - name: echo ok
-        run: |
-          echo 'ok'
+      - name: Install jq
+        run: apt-get install -y jq
+
+      - name: Deploy
+        run: DEPLOY_ENV=stg ./deploy.sh
+        timeout-minutes: 20m
