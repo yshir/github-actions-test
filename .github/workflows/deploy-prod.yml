@@ -8,20 +8,31 @@ on:
       completed
 
 jobs:
-  deploy-stg:
+  deploy-prod:
     runs-on: ubuntu-latest
 
-    # container:
-    #   image: ruby:2.6.6
-
     steps:
-      - uses: actions/checkout@v2
-
       - name: Abort the deployment if test was failed
         if: ${{ github.event.workflow_run.conclusion != 'success' }}
         run: |
-          echo '::error::test was failed. exit'
+          echo '[ERROR] test was failed. abort'
           exit 1
+
+      - uses: actions/checkout@v2
+
+      - uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+
+      - name: Install awscli
+        run: |
+          sudo pip install awscli
+          aws --version
+
+      - name: Install ecs-deploy
+        run: |
+          curl https://raw.githubusercontent.com/silinternational/ecs-deploy/master/ecs-deploy | tee /usr/bin/ecs-deploy
+          sudo chmod +x /usr/bin/ecs-deploy
 
       - name: echo ok
         run: |
