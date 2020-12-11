@@ -5,6 +5,7 @@ on: [push]
 jobs:
   rspec:
     runs-on: ubuntu-latest
+
     container:
       image: ruby:2.6.6
       env:
@@ -22,9 +23,14 @@ jobs:
           --health-timeout 10s
           --health-retries 10
         env:
-          # MYSQL_DATABASE: myapp_test
           MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
           MYSQL_ROOT_PASSWORD: ''
+
+    # strategy:
+    #   fail-fast: false
+    #   matrix:
+    #     ci_node_total: [2]
+    #     ci_node_index: [0, 1, 2]
 
     steps:
       - uses: actions/checkout@v2
@@ -32,9 +38,9 @@ jobs:
       - uses: actions/cache@v2
         with:
           path: vendor/bundle
-          key: bundle-${{ runner.os }}-${{ hashFiles('**/Gemfile.lock') }}
+          key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}
           restore-keys: |
-            bundle-${{ runner.os }}-
+            ${{ runner.os }}-gems-
 
       - name: Install dependencies
         run: |
@@ -49,5 +55,6 @@ jobs:
       - name: run tests
         run: |
           bundle exec rspec --profile 10 \
+            --format RspecJunitFormatter \
             --out test_results/rspec.xml \
             --format progress
