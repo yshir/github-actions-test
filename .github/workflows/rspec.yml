@@ -9,6 +9,7 @@ jobs:
       image: ruby:2.6.6
       env:
         RAILS_ENV: test
+        DATABASE_URL: mysql2://root:@127.0.0.1:3306
 
     services:
       mysql:
@@ -22,7 +23,7 @@ jobs:
           --health-retries 10
         env:
           MYSQL_DATABASE: myapp_test
-          MYSQL_ALLOW_EMPTY_PASSWORD: true
+          MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
           MYSQL_ROOT_PASSWORD: ''
 
     steps:
