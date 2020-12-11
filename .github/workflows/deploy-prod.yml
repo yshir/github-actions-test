@@ -15,7 +15,7 @@ jobs:
       - name: Abort the deployment if test was failed
         if: ${{ github.event.workflow_run.conclusion != 'success' }}
         run: |
-          echo '[ERROR] test was failed. abort'
+          echo "::error:: Test was failed. Abort"
           exit 1
 
       - uses: actions/checkout@v2
