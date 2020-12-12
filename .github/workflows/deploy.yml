@@ -27,6 +27,10 @@ jobs:
         with:
           python-version: '3.x'
 
+      # - uses: actions/setup-ruby@v1
+      #   with:
+      #     ruby-version: '2.6.5'
+
       - uses: actions/cache@v2
         with:
           path: vendor/bundle
@@ -36,7 +40,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          gem install bundler
+          sudo gem install bundler
           bundle install --jobs=4 --retry=3 --path vendor/bundle
 
       - name: Install awscli
