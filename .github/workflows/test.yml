@@ -2,19 +2,23 @@ name: Test
 
 on: [push]
 
+env:
+  RUBY_VERSION: 2.6.5
+  MYSQL_VERSION: 5.7.18
+
 jobs:
   test:
     runs-on: ubuntu-latest
 
     container:
-      image: ruby:2.6.5
+      image: ruby:${{ env.RUBY_VERSION }}
       env:
         RAILS_ENV: test
         DATABASE_URL: mysql2://root:@mysql:3306
 
     services:
       mysql:
-        image: mysql:5.7.18
+        image: mysql:${{ env.MYSQL_VERSION }}
         ports:
           - 3306:3306
         options: >-
