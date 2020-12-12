@@ -1,9 +1,12 @@
-name: Deploy prod
+name: Deploy
 
 on:
   workflow_run:
-    workflows: ['Run test']
-    branches: [master]
+    workflows:
+      - Test
+    branches:
+      - master
+      - staging
     types:
       completed
 
@@ -40,10 +43,12 @@ jobs:
       - name: Install jq
         run: sudo apt-get install -y jq
 
-      - run: ls -al
-
       - name: Deploy
         run: |
+          case ${{ github.ref }} in
+            'refs/heads/master' ) DEPLOY_ENV=prod ;;
+            'refs/heads/staging' ) DEPLOY_ENV=stg ;;
+          esac
           sudo chmod +x ./deploy.sh
-          DEPLOY_ENV=prod ./deploy.sh
+          DEPLOY_ENV=${DEPLOY_ENV} ./deploy.sh
         timeout-minutes: 20
