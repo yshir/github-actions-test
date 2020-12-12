@@ -10,9 +10,6 @@ on:
     types:
       completed
 
-env:
-  RUBY_VERSION: 2.6.5
-
 jobs:
   deploy-prod:
     runs-on: ubuntu-latest
@@ -28,7 +25,7 @@ jobs:
 
       - uses: ruby/setup-ruby@v1
         with:
-          ruby-version: ${{ env.RUBY_VERSION }}
+          ruby-version: 2.6.5
 
       - uses: actions/cache@v2
         with:
