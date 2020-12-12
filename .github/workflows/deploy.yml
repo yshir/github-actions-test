@@ -39,18 +39,18 @@ jobs:
           sudo gem install bundler
           bundle install --jobs=4 --retry=3 --path vendor/bundle
 
-      - name: Setup deployment tools
+      - name: Install deployment tools
         run: |
           # install awscli
           sudo pip install awscli
           aws configure set region ap-northeast-1
 
-          # install jq
-          sudo apt-get install -y jq
-
           # install ecs-deploy
           curl https://raw.githubusercontent.com/silinternational/ecs-deploy/master/ecs-deploy | sudo tee /usr/bin/ecs-deploy
           sudo chmod +x /usr/bin/ecs-deploy
+
+          # install jq
+          sudo apt-get install -y jq
 
       # - name: Deploy
       #   run: |
