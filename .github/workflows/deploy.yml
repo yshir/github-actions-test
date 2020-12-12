@@ -27,6 +27,18 @@ jobs:
         with:
           python-version: '3.x'
 
+      - uses: actions/cache@v2
+        with:
+          path: vendor/bundle
+          key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-gems-
+
+      - name: Install dependencies
+        run: |
+          gem install bundler
+          bundle install --jobs=4 --retry=3 --path vendor/bundle
+
       - name: Install awscli
         run: |
           sudo pip install awscli
