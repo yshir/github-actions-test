@@ -18,7 +18,7 @@ jobs:
       image: ruby:2.6.5
 
     steps:
-      - name: Aborting deployment if test failed
+      - name: Abort the deployment if the test failed
         if: ${{ github.event.workflow_run.conclusion != 'success' }}
         run: |
           echo "::error:: Test was failed. Abort"
@@ -44,7 +44,7 @@ jobs:
 
       - name: Install awscli
         run: |
-          sudo pip install awscli
+          pip install awscli
           aws --version
 
       - name: Set aws region
@@ -52,11 +52,11 @@ jobs:
 
       - name: Install ecs-deploy
         run: |
-          curl https://raw.githubusercontent.com/silinternational/ecs-deploy/master/ecs-deploy | sudo tee /usr/bin/ecs-deploy
-          sudo chmod +x /usr/bin/ecs-deploy
+          curl https://raw.githubusercontent.com/silinternational/ecs-deploy/master/ecs-deploy | tee /usr/bin/ecs-deploy
+          chmod +x /usr/bin/ecs-deploy
 
       - name: Install jq
-        run: sudo apt-get install -y jq
+        run: apt-get install -y jq
 
       - run: ls -al vendor/
 
@@ -66,6 +66,6 @@ jobs:
             'refs/heads/master' ) DEPLOY_ENV=prod ;;
             'refs/heads/staging' ) DEPLOY_ENV=stg ;;
           esac
-          sudo chmod +x ./deploy.sh
+          chmod +x ./deploy.sh
           DEPLOY_ENV=${DEPLOY_ENV} ./deploy.sh
         timeout-minutes: 20
