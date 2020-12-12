@@ -14,18 +14,17 @@ jobs:
   deploy-prod:
     runs-on: ubuntu-latest
 
+    container:
+      image: ruby:2.6.5
+
     steps:
-      - name: Abort the deployment if test was failed
+      - name: Aborting deployment if test failed
         if: ${{ github.event.workflow_run.conclusion != 'success' }}
         run: |
           echo "::error:: Test was failed. Abort"
           exit 1
 
       - uses: actions/checkout@v2
-
-      # - uses: actions/setup-ruby@v1
-      #   with:
-      #     ruby-version: '2.6.5'
 
       - uses: actions/cache@v2
         with:
@@ -34,16 +33,9 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gems-
 
-      - name: Setup bundler
-        run: |
-          sudo gem update --system
-          sudo gem uninstall bundler
-          sudo rm /usr/local/bin/bundle
-          sudo rm /usr/local/bin/bundler
-          sudo gem install bundler
-
       - name: Install dependencies
         run: |
+          gem install bundler
           bundle install --jobs=4 --retry=3 --path vendor/bundle
 
       - uses: actions/setup-python@v2
