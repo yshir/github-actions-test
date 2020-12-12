@@ -41,7 +41,7 @@ jobs:
 
       - uses: actions/setup-python@v2
         with:
-          python-version: '3.x'
+          python-version: 3.x
 
       - name: Install awscli
         run: |
@@ -59,14 +59,12 @@ jobs:
       - name: Install jq
         run: sudo apt-get install -y jq
 
-      - run: ls -al vendor/
-
-      - name: Deploy
-        run: |
-          case ${{ github.ref }} in
-            'refs/heads/master' ) DEPLOY_ENV=prod ;;
-            'refs/heads/staging' ) DEPLOY_ENV=stg ;;
-          esac
-          sudo chmod +x ./deploy.sh
-          DEPLOY_ENV=${DEPLOY_ENV} ./deploy.sh
-        timeout-minutes: 20
+      # - name: Deploy
+      #   run: |
+      #     case ${{ github.ref }} in
+      #       'refs/heads/master' ) DEPLOY_ENV=prod ;;
+      #       'refs/heads/staging' ) DEPLOY_ENV=stg ;;
+      #     esac
+      #     sudo chmod +x ./deploy.sh
+      #     DEPLOY_ENV=${DEPLOY_ENV} ./deploy.sh
+      #   timeout-minutes: 20
