@@ -14,9 +14,6 @@ jobs:
   deploy-prod:
     runs-on: ubuntu-latest
 
-    container:
-      image: ruby:2.6.5
-
     steps:
       - name: Abort the deployment if the test failed
         if: ${{ github.event.workflow_run.conclusion != 'success' }}
@@ -35,7 +32,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          gem install bundler
+          sudo gem install bundler
           bundle install --jobs=4 --retry=3 --path vendor/bundle
 
       - uses: actions/setup-python@v2
@@ -44,7 +41,7 @@ jobs:
 
       - name: Install awscli
         run: |
-          pip install awscli
+          sudo pip install awscli
           aws --version
 
       - name: Set aws region
@@ -52,11 +49,11 @@ jobs:
 
       - name: Install ecs-deploy
         run: |
-          curl https://raw.githubusercontent.com/silinternational/ecs-deploy/master/ecs-deploy | tee /usr/bin/ecs-deploy
-          chmod +x /usr/bin/ecs-deploy
+          curl https://raw.githubusercontent.com/silinternational/ecs-deploy/master/ecs-deploy | sudo tee /usr/bin/ecs-deploy
+          sudo chmod +x /usr/bin/ecs-deploy
 
       - name: Install jq
-        run: apt-get install -y jq
+        run: sudo apt-get install -y jq
 
       - run: ls -al vendor/
 
@@ -66,6 +63,6 @@ jobs:
             'refs/heads/master' ) DEPLOY_ENV=prod ;;
             'refs/heads/staging' ) DEPLOY_ENV=stg ;;
           esac
-          chmod +x ./deploy.sh
+          sudo chmod +x ./deploy.sh
           DEPLOY_ENV=${DEPLOY_ENV} ./deploy.sh
         timeout-minutes: 20
