@@ -41,5 +41,7 @@ jobs:
         run: sudo apt-get install -y jq
 
       - name: Deploy
-        run: DEPLOY_ENV=stg ./deploy.sh
+        run: |
+          sudo chmod +x ./deploy.sh
+          DEPLOY_ENV=stg ./deploy.sh
         timeout-minutes: 20

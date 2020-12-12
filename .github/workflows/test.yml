@@ -3,11 +3,11 @@ name: Run test
 on: [push]
 
 jobs:
-  rspec:
+  test:
     runs-on: ubuntu-latest
 
     container:
-      image: ruby:2.6.6
+      image: ruby:2.6.5
       env:
         RAILS_ENV: test
         DATABASE_URL: mysql2://root:@mysql:3306
@@ -25,12 +25,6 @@ jobs:
         env:
           MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
           MYSQL_ROOT_PASSWORD: ''
-
-    # strategy:
-    #   fail-fast: false
-    #   matrix:
-    #     ci_node_total: [2]
-    #     ci_node_index: [0, 1, 2]
 
     steps:
       - uses: actions/checkout@v2
