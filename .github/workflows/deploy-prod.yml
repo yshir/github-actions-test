@@ -40,8 +40,10 @@ jobs:
       - name: Install jq
         run: sudo apt-get install -y jq
 
+      - run: ls -al
+
       - name: Deploy
         run: |
           sudo chmod +x ./deploy.sh
-          DEPLOY_ENV=stg ./deploy.sh
+          DEPLOY_ENV=prod ./deploy.sh
         timeout-minutes: 20
