@@ -46,7 +46,7 @@ jobs:
           bundle exec rake db:create
           bundle exec rake db:schema:load
 
-      - name: run tests
+      - name: Run tests
         run: |
           bundle exec rspec --profile 10 \
             --format RspecJunitFormatter \
