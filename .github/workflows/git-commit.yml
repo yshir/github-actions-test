@@ -1,0 +1,29 @@
+name: git-commit
+
+on: push
+
+jobs:
+  main:
+    name: main
+    runs-on: ubuntu-latest
+    env:
+      LOG_FILE_PATH: ./logs/git-commit.log
+    steps:
+      - name: Set date
+        id: date
+        run: echo "::set-output name=DATE::$(date '+%Y-%m-%d %H:%M:%S')"
+
+      - uses: actions/checkout@v2
+
+      - name: Log to file
+        run: |
+          echo ${{ steps.date.outputs.DATE }} >> ${{ env.LOG_FILE_PATH }}
+          cat ${{ env.LOG_FILE_PATH }}
+
+      - name: Git commit
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions.@github.com
+          git add .
+          git commit -m "add ${{ steps.date.outputs.DATE }}"
+          git push
