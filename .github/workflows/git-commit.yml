@@ -1,6 +1,9 @@
 name: git-commit
 
-on: push
+on:
+  push:
+    branches:
+      - main
 
 jobs:
   main:
@@ -14,6 +17,8 @@ jobs:
         run: echo "::set-output name=DATE::$(date '+%Y-%m-%d %H:%M:%S')"
 
       - uses: actions/checkout@v2
+        with:
+          ref: main
 
       - name: Log to file
         run: |
@@ -24,7 +29,6 @@ jobs:
         run: |
           git config user.name github-actions
           git config user.email github-actions.@github.com
-          git pull
           git add .
           git commit -m "add ${{ steps.date.outputs.DATE }}"
           git push
