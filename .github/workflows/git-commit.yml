@@ -14,9 +14,13 @@ jobs:
     steps:
       - name: Set date
         id: date
-        run: echo "::set-output name=DATE::$(date '+%Y-%m-%d %H:%M:%S')"
+        run: echo "::set-output name=DATE::$(TZ=Asia/Tokyo date)"
 
       - uses: actions/checkout@v2
+        if: ${{ env.ACT }}
+
+      - uses: actions/checkout@v2
+        if: ${{ !env.ACT }}
         with:
           ref: main
 
@@ -26,6 +30,7 @@ jobs:
           cat ${{ env.LOG_FILE_PATH }}
 
       - name: Git commit
+        if: ${{ !env.ACT }}
         run: |
           git config user.name github-actions
           git config user.email github-actions.@github.com
